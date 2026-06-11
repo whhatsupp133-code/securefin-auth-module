@@ -46,6 +46,9 @@ def login_required(f):
 
 
 def role_required(*roles):
+# RBAC enforcement:
+# Access is denied by default unless the current user has the required role.
+# This mitigates privilege escalation and unauthorized admin access.
     """
     Decorator: Restrict route to users with specific roles.
     Implements RBAC deny-by-default (ASVS V4.1.3).
