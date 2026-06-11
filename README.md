@@ -37,7 +37,7 @@ This is a functional prototype of the **User Authentication and Authorization Mo
 
 ```bash
 git clone https://github.com/whhatsupp133-code/securefin-auth-module
-cd securefin-auth
+cd securefin-auth-module
 ```
 
 ### 2. Create a virtual environment (recommended)
@@ -45,7 +45,7 @@ cd securefin-auth
 ```bash
 python -m venv venv
 source venv/bin/activate        # Linux/macOS
-venv\Scripts\activate           # Windows
+venv\Scripts\Activate.ps1           # Windows
 ```
 
 ### 3. Install dependencies
