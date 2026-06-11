@@ -36,7 +36,7 @@ This is a functional prototype of the **User Authentication and Authorization Mo
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-group/securefin-auth.git
+git clone https://github.com/whhatsupp133-code/securefin-auth-module
 cd securefin-auth
 ```
 
