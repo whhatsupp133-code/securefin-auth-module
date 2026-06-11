@@ -1,10 +1,20 @@
-instance/
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-.env
+
+# Virtual environment
 venv/
 .venv/
-securefin_audit.log
+
+# Environment secrets
+.env
+
+# Local database / runtime files
+instance/
 *.db
+*.sqlite
+securefin_audit.log
+
+# OS files
 .DS_Store
