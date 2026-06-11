@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}User Management{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>👥 User Management</h2>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>MFA</th><th>Status</th><th>Failed Logins</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td><strong>{{ u.username }}</strong></td>
+                <td>{{ u.email }}</td>
+                <td><span class="badge badge-{{ u.role.name }}">{{ u.role.name }}</span></td>
+                <td>{{ '✅' if u.mfa_enabled else '❌' }}</td>
+                <td>
+                    <span class="badge {{ 'badge-success' if u.is_active else 'badge-danger' }}">
+                        {{ 'Active' if u.is_active else 'Disabled' }}
+                    </span>
+                </td>
+                <td>{{ u.failed_logins }}</td>
+                <td style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                    <!-- Toggle account status -->
+                    <form method="POST" action="{{ url_for('admin.toggle_user', user_id=u.id) }}"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-sm {{ 'btn-danger' if u.is_active else 'btn-success' }}">
+                            {{ 'Disable' if u.is_active else 'Enable' }}
+                        </button>
+                    </form>
+                    <!-- Change role -->
+                    <form method="POST" action="{{ url_for('admin.change_role', user_id=u.id) }}"
+                          style="display:inline; display:flex; gap:0.3rem;">
+                        <select name="role" style="padding:0.3rem; border-radius:4px; border:1px solid #ddd; font-size:0.82rem;">
+                            <option value="customer" {{ 'selected' if u.role.name == 'customer' }}>Customer</option>
+                            <option value="staff"    {{ 'selected' if u.role.name == 'staff' }}>Staff</option>
+                            <option value="admin"    {{ 'selected' if u.role.name == 'admin' }}>Admin</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Set Role</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}MFA Verification{% endblock %}
+{% block content %}
+<div style="max-width:420px; margin:3rem auto;">
+    <div class="card">
+        <h2>🔐 Two-Factor Verification</h2>
+        <p style="margin:0.8rem 0 1.2rem; color:#555;">
+            Enter the 6-digit code from your authenticator app to complete login.
+        </p>
+        <form method="POST" action="{{ url_for('auth.verify_mfa') }}">
+            <div class="form-group">
+                <label for="totp_code">MFA Code</label>
+                <input type="text" id="totp_code" name="totp_code"
+                       required minlength="6" maxlength="6"
+                       pattern="[0-9]{6}" inputmode="numeric"
+                       autofocus placeholder="000000">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Verify</button>
+        </form>
+        <p style="margin-top:1rem; font-size:0.9rem;">
+            <a href="{{ url_for('auth.logout') }}">← Cancel and return to login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

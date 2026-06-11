@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>🛡️ Admin Dashboard</h2>
+    <p class="text-muted">Total users: <strong>{{ users|length }}</strong>
+    &nbsp;|&nbsp; Total audit events: <strong>{{ log_count }}</strong></p>
+</div>
+
+<div class="card">
+    <h2>📋 Recent Security Events</h2>
+    <table>
+        <thead>
+            <tr><th>Time</th><th>User</th><th>Event</th><th>Details</th><th>IP</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for log in recent_logs %}
+            <tr>
+                <td class="text-muted">{{ log.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ log.username }}</td>
+                <td><strong>{{ log.event_type }}</strong></td>
+                <td>{{ log.description[:60] }}{% if log.description|length > 60 %}…{% endif %}</td>
+                <td class="text-muted">{{ log.ip_address }}</td>
+                <td>
+                    <span class="badge {{ 'badge-success' if log.success else 'badge-danger' }}">
+                        {{ 'OK' if log.success else 'FAIL' }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSP header reduces XSS risk (ASVS V14.4.3) -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';">
+    <meta name="X-Frame-Options" content="DENY">
+    <title>SecureFin – {% block title %}Portal{% endblock %}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+        .navbar {
+            background: #1a2a4a; color: white; padding: 0.9rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .brand { font-size: 1.3rem; font-weight: 700; color: #4fc3f7; }
+        .navbar .nav-links a { color: #ccc; text-decoration: none; margin-left: 1.2rem; font-size: 0.9rem; }
+        .navbar .nav-links a:hover { color: white; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        .card {
+            background: white; border-radius: 8px; padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem;
+        }
+        .card h2 { margin-bottom: 1.2rem; color: #1a2a4a; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #ddd;
+            border-radius: 5px; font-size: 0.95rem;
+        }
+        .btn {
+            padding: 0.65rem 1.4rem; border: none; border-radius: 5px;
+            cursor: pointer; font-size: 0.95rem; font-weight: 600;
+        }
+        .btn-primary { background: #1a2a4a; color: white; }
+        .btn-primary:hover { background: #2a3f6f; }
+        .btn-danger  { background: #c0392b; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+        .alert {
+            padding: 0.8rem 1rem; border-radius: 5px; margin-bottom: 1rem; font-size: 0.9rem;
+        }
+        .alert-danger  { background: #fdecea; color: #c0392b; border-left: 4px solid #c0392b; }
+        .alert-success { background: #eafaf1; color: #1e8449; border-left: 4px solid #27ae60; }
+        .alert-warning { background: #fef9e7; color: #b7770d; border-left: 4px solid #f39c12; }
+        .alert-info    { background: #eaf4fb; color: #1a6fa0; border-left: 4px solid #3498db; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { padding: 0.7rem 0.8rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f5f7fa; font-weight: 700; color: #555; }
+        tr:hover { background: #fafbfc; }
+        .badge {
+            display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700;
+        }
+        .badge-admin    { background: #2c3e50; color: white; }
+        .badge-staff    { background: #2980b9; color: white; }
+        .badge-customer { background: #27ae60; color: white; }
+        .badge-success  { background: #27ae60; color: white; }
+        .badge-danger   { background: #c0392b; color: white; }
+        .text-muted { color: #888; font-size: 0.85rem; }
+        a { color: #2980b9; }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <span class="brand">🔒 SecureFin</span>
+    <div class="nav-links">
+        {% if session.user_id %}
+            <span style="color:#aaa; font-size:0.85rem;">{{ session.username }} ({{ session.role }})</span>
+            {% if session.role == 'admin' %}
+                <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('admin.user_list') }}">Users</a>
+                <a href="{{ url_for('admin.audit_logs') }}">Audit Logs</a>
+            {% else %}
+                <a href="{{ url_for('customer.dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('customer.profile') }}">Profile</a>
+            {% endif %}
+            <a href="{{ url_for('auth.mfa_setup') }}">MFA Setup</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

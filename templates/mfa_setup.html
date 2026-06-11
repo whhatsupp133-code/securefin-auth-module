@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}MFA Setup{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:2rem auto;">
+    <div class="card">
+        <h2>🔑 Enable Two-Factor Authentication</h2>
+        <p style="margin:0.8rem 0; color:#555;">
+            Scan the QR code below with your authenticator app
+            (Google Authenticator, Authy, etc.), then enter the 6-digit code to confirm.
+        </p>
+
+        <div style="text-align:center; margin:1.5rem 0;">
+            <img src="data:image/png;base64,{{ qr_b64 }}" alt="MFA QR Code"
+                 style="width:200px; height:200px; border:2px solid #ddd; border-radius:6px;">
+        </div>
+
+        <p class="text-muted" style="font-size:0.82rem; margin-bottom:1rem;">
+            Can't scan? Enter this secret manually: <strong>{{ secret }}</strong>
+        </p>
+
+        <form method="POST" action="{{ url_for('auth.mfa_setup') }}">
+            <div class="form-group">
+                <label for="totp_code">Verification Code</label>
+                <input type="text" id="totp_code" name="totp_code"
+                       required minlength="6" maxlength="6"
+                       pattern="[0-9]{6}" inputmode="numeric"
+                       placeholder="6-digit code from your app">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Confirm & Enable MFA</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
