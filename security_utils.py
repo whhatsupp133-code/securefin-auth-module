@@ -95,7 +95,8 @@ def sanitize_input(value: str, max_length: int = 255) -> str:
 
 
 # ── Audit Logging (ASVS V7.2.1) ──────────────────────────────────────────────
-
+# Audit logging records security-relevant events without storing passwords,
+# OTP codes, MFA secrets, or session tokens.
 def log_event(event_type: str, description: str, user=None, success: bool = True):
     """
     Write a security event to the audit log table and application log file.
