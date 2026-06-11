@@ -205,3 +205,14 @@ securefin/
 ## Academic Integrity
 
 This prototype was developed as original group work for ITS69405. All external libraries used are open-source and listed in `requirements.txt`. No AI-generated code was submitted without declaration per Taylor's University AI-use policy.
+
+## Security Configuration Notes
+
+For local development, the application runs on http://127.0.0.1:5000. In production deployment, HTTPS must be enforced and SESSION_COOKIE_SECURE must be set to True.
+
+The application uses:
+- Argon2id password hashing
+- TOTP-based MFA
+- HttpOnly and SameSite session cookies
+- RBAC for protected routes
+- Audit logging for security events
