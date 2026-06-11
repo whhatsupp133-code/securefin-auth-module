@@ -216,3 +216,12 @@ The application uses:
 - HttpOnly and SameSite session cookies
 - RBAC for protected routes
 - Audit logging for security events
+
+## Prototype Test Flow
+
+1. Register a customer account.
+2. Log in with the customer account.
+3. Enable TOTP MFA from the MFA Setup page.
+4. Log out and log in again to verify MFA enforcement.
+5. Attempt to access `/admin/dashboard` as a customer to test RBAC denial.
+6. Log in as admin to review audit logs.
